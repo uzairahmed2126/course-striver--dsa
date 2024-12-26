@@ -1,11 +1,24 @@
-let rows = 5;
-let columns = 5;
-let pattern = "";
+// let rows = 5;
+// let columns = 5;
+// let pattern = "";
 
-for (let i = 1; i <= rows; i++) {
-  for (let j = 1; j <= i; j++) {
-    pattern += i;
+// for (let i = 1; i <= rows; i++) {
+//   for (let j = 1; j <= i; j++) {
+//     pattern += i;
+//   }
+//   pattern += "\n";
+// }
+// console.log(pattern);
+
+let patternSize = 5;
+let pattern = "";
+function patternFunction(result, n) {
+  for (let i = 1; i <= n; i++) {
+    for (let j = 1; j <= i; j++) {
+      result += j;
+    }
+    if (i !== n) result += "\n";
   }
-  pattern += "\n";
+  return result;
 }
-console.log(pattern);
+console.log(patternFunction(pattern, patternSize));
