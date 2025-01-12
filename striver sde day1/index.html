@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        font-family: "Gillroy";
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+      }
+
+      #main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        background-color: rgb(156, 221, 156);
+      }
+
+      #panel {
+        width: 80%;
+        height: 80%;
+        background-color: white;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+
+      #topP {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0px 30%;
+        width: 100%;
+        height: 100px;
+        background-color: rgb(72, 104, 72);
+      }
+
+      .elem {
+        color: white;
+        display: flex;
+        align-items: center;
+        gap: 20px;
+      }
+
+      .box {
+        color: black;
+        font-weight: 700;
+        padding: 10px 20px;
+        background-color: #fff;
+        border-radius: 5px;
+      }
+
+      #bottomP {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 20px;
+        width: 100%;
+        padding: 10px;
+        height: calc(100% - 100px);
+      }
+
+      .bubble {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        width: 60px;
+        height: 60px;
+        background-color: rgb(59, 153, 207);
+        border-radius: 50%;
+      }
+
+      .bubble:hover {
+        cursor: pointer;
+        background-color: rgb(19, 75, 107);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="main">
+      <div id="panel">
+        <div id="topP">
+          <div class="elem">
+            <h2>Hit</h2>
+            <div class="box hit">5</div>
+          </div>
+          <div class="elem">
+            <h2>Timer</h2>
+            <div class="box timer">60</div>
+          </div>
+          <div class="elem">
+            <h2>Score</h2>
+            <div class="box score">0</div>
+          </div>
+        </div>
+
+        <div id="bottomP">
+          <!-- <div class="bubble">5</div> -->
+        </div>
+      </div>
+    </div>
+  </body>
+  <script>
+    const bottomP = document.getElementById("bottomP");
+    const timer = document.querySelector(".timer");
+    const hit = document.querySelector(".hit");
+    const score = document.querySelector(".score");
+    let clutter = "";
+    let hitrn = 0;
+    let points = 0;
+
+    //1 Create Bubble Creator.
+    function createBubble() {
+      let store = "";
+      for (let i = 0; i < 65; i++) {
+        let random = Math.floor(Math.random(i) * 10);
+        store += `<div class="bubble">${random}</div>`;
+        bottomP.innerHTML = store;
+      }
+    }
+
+    //2 Timer.
+    let time = 60;
+
+    function startTimer() {
+      let intervalId = setInterval(() => {
+        if (time > 0) {
+          time--;
+          timer.textContent = time;
+        }
+
+        if (time <= 0) {
+          clearInterval(intervalId);
+          gameOverMessage();
+        }
+      }, 1000);
+    }
+    startTimer();
+
+    //3 Random Hit Number.
+    function randomHit() {
+      hitrn = Math.floor(Math.random() * 10);
+      hit.textContent = hitrn;
+    }
+    randomHit();
+
+    //4 Game Over Message.
+    function gameOverMessage() {
+      bottomP.innerHTML = "";
+      const message = document.createElement("h1");
+      message.classList.add("message");
+      message.textContent = "Game - Over!";
+      bottomP.append(message);
+    }
+
+    //5 Score Increaser.
+    function updateScore(value) {
+      points += value;
+      if (points < 0) {
+        points = 0; // Ensure score doesn't go below 0
+      }
+      score.textContent = points;
+    }
+
+    // Event Bubbling.
+    bottomP.addEventListener("click", (event) => {
+      let clickedRn = Number(event.target.textContent);
+      if (clickedRn === hitrn) {
+        updateScore(10);
+        createBubble();
+      } else {
+        updateScore(-10);
+      }
+    });
+    createBubble();
+  </script>
+</html>
